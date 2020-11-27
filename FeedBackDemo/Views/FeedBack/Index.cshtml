@@ -52,7 +52,7 @@
                                             @item.User.UserName
                                         </td>
                                         <td>
-                                            @item.CreateDate
+                                            @item.CreateDate.ToLocalTime()
                                         </td>
                                         <td>
                                             @if (@item.PostComments.Count > 1)
@@ -75,7 +75,7 @@
                                                 @pp.User.UserName
                                             </td>
                                             <td>
-                                                @pp.CreateDate
+                                                @pp.CreateDate.ToLocalTime()
                                             </td>
                                             <td>
                                                 <span class="vote" data-type="1" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.VoteList.Count(x => x.Type == 1) </span> </span>
