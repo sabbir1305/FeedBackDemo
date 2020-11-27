@@ -88,7 +88,7 @@ namespace FeedBackDemo.Repo
             return voteList;
         }
 
-        public void UpdateCommentCount(int commentId,int DisLike , int Like)
+        public void UpdateCommentCount(int commentId , int Like, int DisLike)
         {
             var comment = context.Comments.Find(commentId);
             comment.LikeCount = Like;
