@@ -70,12 +70,14 @@ namespace FeedBackDemo.Controllers
                         context.SaveChanges();
 
                         var voteCount = feedBack.CountVote(vote.CommentId);
+                        feedBack.UpdateCommentCount(vote.CommentId, voteCount[0], voteCount[1]);
 
                         return Json(new { like = voteCount[0], dislike = voteCount[1] }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
                         var voteCount = feedBack.CountVote(vote.CommentId);
+                        feedBack.UpdateCommentCount(vote.CommentId, voteCount[0], voteCount[1]);
                         return Json(new { like = voteCount[0], dislike = voteCount[1] }, JsonRequestBehavior.AllowGet);
                     }
 
@@ -92,6 +94,9 @@ namespace FeedBackDemo.Controllers
                         context.Votes.Add(vote);
                         context.SaveChanges();
                         var voteCount = feedBack.CountVote(vote.CommentId);
+
+                        feedBack.UpdateCommentCount(vote.CommentId, voteCount[0], voteCount[1]);
+
                         return Json(new { like = voteCount[0], dislike = voteCount[1] }, JsonRequestBehavior.AllowGet);
                     }
                 }
@@ -103,6 +108,46 @@ namespace FeedBackDemo.Controllers
         }
 
 
-        
+        // GET: FeedBack
+        public ActionResult Index2()
+        {
+            FeedBackVM fb = new FeedBackVM();
+            using (var context = new ApplicationDbContext())
+            {
+                FeedBackRepo feedBack = new FeedBackRepo(context);
+
+
+                feedBack.GetAllPost(1, fb);
+            }
+
+            return View(fb);
+        }
+
+        [HttpPost]
+        public ActionResult Index2(FeedBackVM fb)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                FeedBackRepo feedBack = new FeedBackRepo(context);
+                //Reset page count
+                if (fb.HiddenItemPerPage != fb.ItemPerPage)
+                {
+                    fb.page = 1;
+
+                }
+                else
+                {
+                    fb.page = fb.page;
+
+                }
+                fb.HiddenItemPerPage = fb.ItemPerPage;
+
+                feedBack.GetAllPost((int)fb.page, fb);
+            }
+
+            return View(fb);
+        }
+
+
     }
 }

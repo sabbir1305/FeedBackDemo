@@ -87,5 +87,72 @@ namespace FeedBackDemo.Repo
             voteList.Add(countLike.Count(x => x.Type == 2));
             return voteList;
         }
+
+        public void UpdateCommentCount(int commentId,int DisLike , int Like)
+        {
+            var comment = context.Comments.Find(commentId);
+            comment.LikeCount = Like;
+            comment.DisLikeCount = DisLike;
+
+            context.SaveChanges();
+        }
+
+
+        public void GetAllPost(int Page, FeedBackVM feedBack)
+        {
+
+
+
+            var posts = context.Posts.Include("User").Include("PostComments").Include("PostComments.User");
+
+
+            var posts2 = posts;
+            feedBack.TotalPost = posts2.Count();
+
+            var pager = new Pager(feedBack.TotalPost, Page, 5);
+
+            feedBack.PostList = posts.OrderBy(x=>x.Id).Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList();
+
+
+            feedBack.ItemPerPage = 5;
+            feedBack.HiddenItemPerPage = 5;
+            feedBack.pager = pager;
+          
+        }
+
+
+
+        //    public void SingleQueryTestData()
+        //    {
+        //        var allData = from p in context.Posts
+        //                      join c in context.Comments on p.Id equals c.PostId into cc from c1 in cc.DefaultIfEmpty()                       
+        //                      group new { p , c1} by new {p} into gpp
+        //                      select new
+        //                      {
+        //                          gpp.Key.p,
+        //                          Comments = gpp.GroupBy(x=>x.c1)
+        //                      }
+
+
+
+        //                      List< Continent > List = MyRepository.GetList<GetAllCountriesAndCities>("EXEC sp_GetAllCountriesAndCities")
+        //.GroupBy(x => x.ContinentName)
+        //.Select(g => new Continent
+        //{
+        //    ContinentName = g.Key,
+        //    Countries = g.GroupBy(x => x.CountryName)
+        //                 .Select(cg => new Country
+        //                 {
+        //                     CountryName = cg.Key,
+        //                     Cities = cg.GroupBy(x => x.CityName)
+        //                                .Select(cityG => new City { CityName = cityG.Key })
+        //                                .ToList()
+        //                 })
+        //                 .ToList()
+        //})
+        //.ToList();
+
+
+        //    }
     }
 }

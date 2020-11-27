@@ -7,7 +7,7 @@
 
 <div class="card-body">
 
-    @using (Html.BeginForm("Index", "FeedBack", FormMethod.Post, new { id = "searchForm" }))
+    @using (Html.BeginForm("Index2", "FeedBack", FormMethod.Post, new { id = "searchForm" }))
     {
 
 
@@ -17,7 +17,7 @@
                 @Html.HiddenFor(x => x.page)
                 <input type="hidden" name="HiddenItemPerPage" value="@Model.HiddenItemPerPage" />
                 <input type="hidden" name="ItemPerPage" value="@Model.ItemPerPage" />
-              
+
 
             </div>
 
@@ -36,7 +36,7 @@
                     <input id="myInput" class="form-control input-sm" type="text" placeholder="Search Posts.." style="margin-bottom:10px;">
                 </div>
                 <div class="col-md-12">
-                   
+
                     <div class="table-responsive" style="font-size: 12px;">
                         <table id="postTbl" class="table table-sm table-bordered table-striped table-hover datatable" style="white-space:nowrap">
 
@@ -77,8 +77,8 @@
                                                 @pp.CreateDate.ToLocalTime()
                                             </td>
                                             <td>
-                                                <span class="vote" data-type="1" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.VoteList.Count(x => x.Type == 1) </span> </span>
-                                                <span class="vote" data-type="2" style="color:red;margin-left:5px"><i class="fa fa-angle-down"></i> <span id="dislikeVote_@pp.Id">@pp.VoteList.Count(x => x.Type == 2) </span> </span>
+                                                <span class="vote" data-type="1" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.LikeCount </span> </span>
+                                                <span class="vote" data-type="2" style="color:red;margin-left:5px"><i class="fa fa-angle-down"></i> <span id="dislikeVote_@pp.Id">@pp.DisLikeCount </span> </span>
                                             </td>
                                         </tr>
                                     }
@@ -129,11 +129,11 @@
                         </ul>
                     }
                 </div>
-           
-            <div class="col-md-6 pull-left">
-               
-                <h3 class="text-muted">Total @Model.TotalPost Posts</h3>
-            </div>
+
+                <div class="col-md-6 pull-left">
+
+                    <h3 class="text-muted">Total @Model.TotalPost Posts</h3>
+                </div>
             </div>
 
         </div>
@@ -156,9 +156,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-        
 
-        
+
+
             $("#myInput").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("#postTbl tbody tr").filter(function () {
@@ -167,7 +167,7 @@
             });
 
 
- 
+
 
 
             //Pagination
@@ -204,7 +204,7 @@
             })
 
 
-        
+
 
 
 

@@ -9,7 +9,7 @@ using System.Web;
 
 namespace FeedBackDemo.Models
 {
-    public class FeedBackDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class FeedBackDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

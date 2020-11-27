@@ -201,6 +201,10 @@
     <Compile Include="Migrations\202011270954246_AllModelAndSeedDataAdded.Designer.cs">
       <DependentUpon>202011270954246_AllModelAndSeedDataAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011271508158_AllModelAndSeedDataAdded2.cs" />
+    <Compile Include="Migrations\202011271508158_AllModelAndSeedDataAdded2.Designer.cs">
+      <DependentUpon>202011271508158_AllModelAndSeedDataAdded2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -274,6 +278,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\FeedBack\Index.cshtml" />
+    <Content Include="Views\FeedBack\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -298,6 +303,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011270954246_AllModelAndSeedDataAdded.resx">
       <DependentUpon>202011270954246_AllModelAndSeedDataAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011271508158_AllModelAndSeedDataAdded2.resx">
+      <DependentUpon>202011271508158_AllModelAndSeedDataAdded2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

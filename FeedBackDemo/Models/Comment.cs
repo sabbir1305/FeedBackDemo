@@ -30,5 +30,8 @@ namespace FeedBackDemo.Models
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Vote> VoteList { get; set; }
+
+        public int LikeCount { get; set; }
+        public int DisLikeCount { get; set; }
     }
 }
