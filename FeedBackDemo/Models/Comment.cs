@@ -7,20 +7,28 @@ using System.Web;
 
 namespace FeedBackDemo.Models
 {
-    public class Post
+    public class Comment
     {
+        public Comment()
+        {
+            this.VoteList = new HashSet<Vote>();
+            this.User = new ApplicationUser();
+        }
         public int Id { get; set; }
-        [StringLength(150)]
+        [StringLength(250)]
         [Required]
-        public string Title { get; set; }
+        public string Description { get; set; }
 
         public DateTime CreateDate { get; set; }
+
+        public int PostId { get; set; }
+        [ForeignKey("PostId")]
+        public virtual Post Order { get; set; }
 
         public string CreatedBy { get; set; }
         [ForeignKey("CreatedBy")]
         public virtual ApplicationUser User { get; set; }
 
-        public virtual List<Comment> PostComments { get; set; }
-
+        public virtual ICollection<Vote> VoteList { get; set; }
     }
 }

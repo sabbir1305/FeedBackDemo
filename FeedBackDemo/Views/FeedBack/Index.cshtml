@@ -1,0 +1,193 @@
+﻿@model FeedBackDemo.Models.ViewModels.FeedBackVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-body">
+
+    @using (Html.BeginForm("Index", "FeedBack", FormMethod.Post, new { id = "searchForm" }))
+    {
+
+
+        <div class="form-body" style="margin-bottom:15px;margin-right:13px;">
+            <div class="row">
+
+                @Html.HiddenFor(x => x.page)
+                <input type="hidden" name="HiddenItemPerPage" value="@Model.HiddenItemPerPage" />
+                <input type="hidden" name="ItemPerPage" value="@Model.ItemPerPage" />
+              
+
+            </div>
+
+
+
+            <div class="row" style="margin-top:5px;">
+
+
+
+
+
+                <div class="col-md-12">
+                    <div class="table-responsive" style="font-size: 12px;">
+                        <table class="table table-sm table-bordered table-striped table-hover datatable" style="white-space:nowrap">
+
+
+
+            @*create Table Boday*@
+            <tbody id="srcBody">
+                @foreach (var item in Model.PostList)
+                {
+                    <tr id="@item.Id" style="color:white;background-color:#22796e;font-weight:bold;" class="">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+
+                        <td>
+                            @item.User.UserName
+                        </td>
+
+                        <td>
+                            @item.CreateDate
+                        </td>
+                        <td>
+                            @if (@item.PostComments.Count > 1)
+                            {
+                                @item.PostComments.Count @Html.Raw(" Comments")
+                            }
+                            else
+                            {
+                                @item.PostComments.Count @Html.Raw(" Comment")
+                            }
+
+                        </td>
+                    </tr>
+                    foreach (var pp in item.PostComments)
+                    {
+                        <tr id="@pp.Id">
+                            <td>
+                                @Html.DisplayFor(modelItem => pp.Description)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => pp.User.UserName)
+                            </td>
+
+                            <td>
+                                @pp.CreateDate
+                            </td>
+                            <td>
+                                <span class="like-Vote" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.VoteList.Count(x => x.Type == 1) </span> </span>
+                                <span class="dislike-Vote" style="color:red;margin-left:5px"><i class="fa fa-angle-down"></i> <span id="dislikeVote_@pp.Id">@pp.VoteList.Count(x => x.Type == 2) </span> </span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+           
+        </table>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 ">
+                    <!-- pager -->
+                    @if (Model.pager.EndPage > 1)
+                    {
+                        <ul class="pagination pull-left" id="results">
+                            @if (Model.pager.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="#" id="@Model.pager.StartPage">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" id="@(Model.pager.CurrentPage-1)">Previous</a>
+                                </li>
+                            }
+
+                            @for (var page = Model.pager.StartPage; page <= Model.pager.EndPage; page++)
+                            {
+                                <li class="page-item @(page == Model.pager.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="#" id="@page">@page</a>
+                                </li>
+                            }
+
+                            @if (Model.pager.CurrentPage < Model.pager.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="#" id="@(Model.pager.CurrentPage + 1)">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" id="@(Model.pager.TotalPages)">Last</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+           
+            <div class="col-md-6 pull-left">
+               
+                <h3 class="text-muted">Total @Model.TotalPost</h3>
+            </div>
+            </div>
+
+        </div>
+
+
+
+
+    }
+
+
+
+
+</div>
+
+
+
+@section scripts{
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        
+
+        
+
+
+
+ 
+
+
+            //Pagination
+            $('#results li a').click(function (e) {
+
+                var id = e.currentTarget.id;
+
+                 $('#page').val(id);
+
+
+            $('#searchForm').submit();
+
+            return false;
+            });
+
+
+
+
+
+
+        });
+
+
+
+    </script>
+}

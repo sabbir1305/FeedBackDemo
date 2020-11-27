@@ -23,11 +23,18 @@ namespace FeedBackDemo.Models
         public ApplicationDbContext()
             : base("DBConnection", throwIfV1Schema: false)
         {
+            base.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
+         //   Database.SetInitializer(new FeedBackDbInitializer());
         }
 
         public static ApplicationDbContext Create()
         {
+           // Database.SetInitializer(new FeedBackDbInitializer());
             return new ApplicationDbContext();
         }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Vote> Votes { get; set; }
     }
 }
