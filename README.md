@@ -1,5 +1,5 @@
 # FeedBackDemo
-From register create a user to run seed data  : 
+From register create a user to create Database and seed data  : 
   UserName = ahmed@mail.com;
   pass = Abc123456!
   
