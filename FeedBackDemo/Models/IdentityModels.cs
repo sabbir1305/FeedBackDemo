@@ -25,7 +25,7 @@ namespace FeedBackDemo.Models
         {
             base.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
-         //   Database.SetInitializer(new FeedBackDbInitializer());
+            Database.SetInitializer(new FeedBackDbInitializer());
         }
 
         public static ApplicationDbContext Create()

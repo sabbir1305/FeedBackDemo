@@ -45,15 +45,16 @@ namespace FeedBackDemo.Repo
           
 
             var posts2 = posts;
-            var count = posts2.Count();
+            feedBack.TotalPost = posts2.Count();
 
-            var pager = new Pager(count, Page, 5);
+            var pager = new Pager(feedBack.TotalPost, Page, 5);
 
             var   PostList = posts.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize).ToList();
 
             var postId = PostList.Select(x => x.Id).ToList();
 
-            var comments = context.Comments.Where(x=>postId.Contains(x.PostId)).Include(x => x.User).ToList();
+            var comments = context.Comments.Include(x => x.User).Where(x=>postId.Contains(x.PostId)).ToList();
+           // var comments = context.Comments.Include(x => x.User).ToList();
 
             var commentIds = comments.Select(x => x.Id).ToList();
 
@@ -75,6 +76,16 @@ namespace FeedBackDemo.Repo
             // stock.StockList = items;
             feedBack.pager = pager;
             feedBack.PostList = PostList;
+        }
+
+        public List<int> CountVote(int commentId)
+        {
+            var voteList = new List<int>();
+            var countLike = context.Votes.Where(x => x.CommentId == commentId).ToList();
+
+            voteList.Add(countLike.Count(x => x.Type == 1));
+            voteList.Add(countLike.Count(x => x.Type == 2));
+            return voteList;
         }
     }
 }

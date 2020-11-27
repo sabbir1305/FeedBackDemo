@@ -23,71 +23,70 @@
 
 
 
-            <div class="row" style="margin-top:5px;">
+            <div class="row" style="margin-top:10px;">
 
 
 
 
 
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-4">
+                    <input id="myInput" class="form-control input-sm" type="text" placeholder="Search Posts.." style="margin-bottom:10px;">
+                </div>
                 <div class="col-md-12">
+                   
                     <div class="table-responsive" style="font-size: 12px;">
-                        <table class="table table-sm table-bordered table-striped table-hover datatable" style="white-space:nowrap">
+                        <table id="postTbl" class="table table-sm table-bordered table-striped table-hover datatable" style="white-space:nowrap">
 
+                            @*create Table Boday*@
+                            <tbody id="srcBody">
+                                @foreach (var item in Model.PostList)
+                                {
+                                    <tr id="@item.Id" style="color:white;background-color:#22796e;font-weight:bold;" class="">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            @item.User.UserName
+                                        </td>
+                                        <td>
+                                            @item.CreateDate
+                                        </td>
+                                        <td>
+                                            @if (@item.PostComments.Count > 1)
+                                            {
+                                                @item.PostComments.Count @Html.Raw(" Comments")
+                                            }
+                                            else
+                                            {
+                                                @item.PostComments.Count @Html.Raw(" Comment")
+                                            }
+                                        </td>
+                                    </tr>
+                                    foreach (var pp in item.PostComments)
+                                    {
+                                        <tr id="@pp.Id">
+                                            <td>
+                                                @pp.Description
+                                            </td>
+                                            <td>
+                                                @pp.User.UserName
+                                            </td>
+                                            <td>
+                                                @pp.CreateDate
+                                            </td>
+                                            <td>
+                                                <span class="vote" data-type="1" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.VoteList.Count(x => x.Type == 1) </span> </span>
+                                                <span class="vote" data-type="2" style="color:red;margin-left:5px"><i class="fa fa-angle-down"></i> <span id="dislikeVote_@pp.Id">@pp.VoteList.Count(x => x.Type == 2) </span> </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
 
-
-            @*create Table Boday*@
-            <tbody id="srcBody">
-                @foreach (var item in Model.PostList)
-                {
-                    <tr id="@item.Id" style="color:white;background-color:#22796e;font-weight:bold;" class="">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-
-                        <td>
-                            @item.User.UserName
-                        </td>
-
-                        <td>
-                            @item.CreateDate
-                        </td>
-                        <td>
-                            @if (@item.PostComments.Count > 1)
-                            {
-                                @item.PostComments.Count @Html.Raw(" Comments")
-                            }
-                            else
-                            {
-                                @item.PostComments.Count @Html.Raw(" Comment")
-                            }
-
-                        </td>
-                    </tr>
-                    foreach (var pp in item.PostComments)
-                    {
-                        <tr id="@pp.Id">
-                            <td>
-                                @Html.DisplayFor(modelItem => pp.Description)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => pp.User.UserName)
-                            </td>
-
-                            <td>
-                                @pp.CreateDate
-                            </td>
-                            <td>
-                                <span class="like-Vote" style="color:green"><i class="fa fa-angle-up"></i> <span id="likeVote_@pp.Id"> @pp.VoteList.Count(x => x.Type == 1) </span> </span>
-                                <span class="dislike-Vote" style="color:red;margin-left:5px"><i class="fa fa-angle-down"></i> <span id="dislikeVote_@pp.Id">@pp.VoteList.Count(x => x.Type == 2) </span> </span>
-                            </td>
-                        </tr>
-                    }
-                }
-            </tbody>
-
-           
-        </table>
+                        </table>
 
                     </div>
 
@@ -134,7 +133,7 @@
            
             <div class="col-md-6 pull-left">
                
-                <h3 class="text-muted">Total @Model.TotalPost</h3>
+                <h3 class="text-muted">Total @Model.TotalPost Posts</h3>
             </div>
             </div>
 
@@ -161,7 +160,12 @@
         
 
         
-
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#postTbl tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
 
 
  
@@ -180,8 +184,28 @@
             return false;
             });
 
+            $('.vote').click(function () {
+                let type = $(this).data('type');
+                //alert(type);
+                var trid = $(this).closest('tr').attr('id');
+
+                $.ajax({
+                    type: 'Get',
+                    url: "/FeedBack/Vote",
+                    contentType: "application/json; charset=utf-8",
+                    data: { "CommentId": trid, "Type": type },
+                    datatype: 'Json',
+                    success: function (data) {
+
+                        $('#likeVote_' + trid).text(data.like);
+                        $('#dislikeVote_' + trid).text(data.dislike);
+
+                    }
+                });
+            })
 
 
+        
 
 
 

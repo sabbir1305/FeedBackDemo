@@ -116,10 +116,10 @@ namespace FeedBackDemo.Models
                 foreach (var user in normalUsers)
                 {
                     Random r = new Random();
-                    int randomlyComment = r.Next(0, postCount);
+                    //int randomlyComment = r.Next(0, postCount);
 
                     var commentLst = new List<Comment>();
-                    foreach (var item in AllPost.Take(randomlyComment))
+                    foreach (var item in AllPost.Take(5))
                     {
                         commentLst.Add(new Comment
                         {

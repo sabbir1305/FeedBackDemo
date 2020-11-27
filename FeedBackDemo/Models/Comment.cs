@@ -12,7 +12,7 @@ namespace FeedBackDemo.Models
         public Comment()
         {
             this.VoteList = new HashSet<Vote>();
-            this.User = new ApplicationUser();
+           // this.User = new ApplicationUser();
         }
         public int Id { get; set; }
         [StringLength(250)]
